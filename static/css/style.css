@@ -1,5 +1,5 @@
 /* ================================================
-   해성전력계통 – 공통 스타일
+   ?�성?�력계통 ??공통 ?��???
    ================================================ */
 :root {
   --bg-dark: #0a1628;
@@ -32,7 +32,7 @@ body {
 }
 
 /* ------------------------------------------------
-   로그인 페이지
+   로그???�이지
 ------------------------------------------------ */
 .login-body {
   display: flex;
@@ -115,6 +115,26 @@ body {
 }
 .pw-toggle svg { width: 20px; height: 20px; display: block; }
 
+.remember-row {
+  margin: -6px 0 12px;
+}
+
+.remember-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .82rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-label input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--accent);
+}
+
 .btn-login {
   width: 100%;
   padding: 12px;
@@ -135,11 +155,11 @@ body {
 .login-footer { font-size: .72rem; color: #3a5a80; }
 
 /* ------------------------------------------------
-   메인 레이아웃
+   메인 ?�이?�웃
 ------------------------------------------------ */
 .main-body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-/* 헤더 */
+/* ?�더 */
 .main-header {
   height: var(--header-h);
   background: var(--bg-card);
@@ -184,7 +204,7 @@ body {
 }
 .btn-logout:hover { background: rgba(229,57,53,.22); }
 
-/* 관리자 툴바 */
+/* 관리자 ?�바 */
 .admin-toolbar {
   height: var(--toolbar-h);
   background: var(--bg-card2);
@@ -198,7 +218,7 @@ body {
 
 .toolbar-label { font-size: .8rem; color: var(--text-secondary); margin-right: 6px; }
 
-/* 토글 스위치 */
+/* ?��? ?�위�?*/
 .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
 .toggle-switch input { opacity: 0; width: 0; height: 0; }
 .toggle-slider {
@@ -228,10 +248,10 @@ body {
 .tb-btn-primary { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: #fff; }
 .tb-btn-secondary { background: rgba(255,255,255,.07); border: 1px solid var(--border) !important; color: var(--text-primary); }
 
-/* 지도 영역 */
+/* 지???�역 */
 .map-container {
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   display: flex;
   align-items: center;
@@ -243,6 +263,8 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  transition: transform .15s ease-out;
+  will-change: transform;
 }
 
 .map-bg {
@@ -278,11 +300,11 @@ body {
 
 .buildings-layer {
   position: absolute; inset: 0;
-  pointer-events: none; /* 개별 아이콘에서 활성화 */
+  pointer-events: none; /* 개별 ?�이콘에???�성??*/
 }
 
 /* ------------------------------------------------
-   건물 아이콘
+   건물 ?�이�?
 ------------------------------------------------ */
 .building-icon {
   position: absolute;
@@ -302,7 +324,7 @@ body {
 .building-icon.dragging { cursor: grabbing; z-index: 30; filter: brightness(1.35); }
 
 .building-badge {
-  width: 52px; height: 52px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   position: relative;
@@ -314,13 +336,13 @@ body {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(0,0,0,.6);
 }
-.building-badge svg { width: 26px; height: 26px; color: #fff; }
+.building-badge svg { width: 18px; height: 18px; color: #fff; }
 
 .building-badge::after {
   content: '';
-  position: absolute; bottom: -10px;
+  position: absolute; bottom: -7px;
   left: 50%; transform: translateX(-50%);
-  border: 6px solid transparent;
+  border: 4px solid transparent;
   border-top-color: currentColor;
 }
 
@@ -348,6 +370,76 @@ body {
   background: rgba(0,0,0,.6); border-radius: 50%;
   width: 14px; height: 14px; display: flex; align-items: center; justify-content: center;
   line-height: 1;
+}
+
+/* ------------------------------------------------
+   �?컨트�?
+------------------------------------------------ */
+.zoom-controls {
+  position: absolute; right: 16px; bottom: 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  z-index: 25;
+  opacity: 1;
+  transition: opacity .2s, visibility .2s;
+  visibility: visible;
+}
+
+.zoom-controls.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.zoom-btn {
+  width: 32px; height: 32px;
+  background: rgba(26,115,232,.12);
+  border: 1px solid rgba(26,115,232,.3);
+  border-radius: 4px;
+  color: var(--accent-light);
+  font-size: 1.1rem; font-weight: 700;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  display: flex; align-items: center; justify-content: center;
+}
+.zoom-btn:hover { background: rgba(26,115,232,.25); transform: scale(1.08); }
+.zoom-btn:active { transform: scale(0.96); }
+
+.zoom-level {
+  font-size: .72rem; color: var(--text-secondary);
+  padding: 2px 6px; text-align: center; min-width: 36px;
+}
+
+.zoom-btn.zoom-reset {
+  font-size: .9rem; margin-top: 4px;
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.15);
+  color: var(--text-primary);
+}
+.zoom-btn.zoom-reset:hover { background: rgba(255,255,255,.12); }
+
+/* �??��? 버튼 */
+.zoom-toggle {
+  position: absolute; right: 16px; bottom: 16px;
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, rgba(26,115,232,.2), rgba(26,115,232,.12));
+  border: 1px solid rgba(26,115,232,.3);
+  border-radius: 50%;
+  color: var(--accent-light);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+  z-index: 24;
+}
+.zoom-toggle:hover { background: linear-gradient(135deg, rgba(26,115,232,.32), rgba(26,115,232,.24)); transform: scale(1.1); }
+.zoom-toggle svg { width: 20px; height: 20px; }
+
+.zoom-controls.hidden ~ .zoom-toggle {
+  z-index: 26;
 }
 
 /* ------------------------------------------------
@@ -412,7 +504,7 @@ body {
 }
 .btn-secondary:hover { background: rgba(255,255,255,.1); }
 
-/* 색상 팔레트 */
+/* ?�상 ?�레??*/
 .color-palette {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
@@ -425,7 +517,7 @@ body {
 .cp-swatch.active { border-color: #fff; }
 #customColor { width: 32px; height: 32px; border: none; border-radius: 50%; cursor: pointer; padding: 0; background: none; }
 
-/* 층수 편집기 */
+/* 층수 ?�집�?*/
 .floor-editor {
   display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;
 }
@@ -446,7 +538,7 @@ body {
 }
 .btn-add-floor:hover { background: rgba(26,115,232,.2); }
 
-/* 층수 선택 모달 */
+/* 층수 ?�택 모달 */
 .floor-modal-card { max-width: 380px; }
 
 .floor-modal-actions { display: flex; align-items: center; gap: 8px; }
@@ -484,15 +576,15 @@ body {
 }
 
 /* ------------------------------------------------
-   반응형 모바일
+   반응??모바??
 ------------------------------------------------ */
 @media (max-width: 600px) {
   .header-sub { display: none; }
   .header-company { font-size: .9rem; }
   .admin-toolbar { padding: 0 12px; gap: 10px; overflow-x: auto; }
   .tb-btn { padding: 6px 10px; font-size: .75rem; }
-  .building-badge { width: 44px; height: 44px; }
-  .building-badge svg { width: 22px; height: 22px; }
+  .building-badge { width: 32px; height: 32px; }
+  .building-badge svg { width: 15px; height: 15px; }
   .building-label { font-size: .66rem; }
   .floor-grid { grid-template-columns: repeat(2, 1fr); }
 }

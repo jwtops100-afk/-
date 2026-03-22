@@ -33,7 +33,7 @@
       <div class="login-error">{{ error }}</div>
       {% endif %}
 
-      <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+      <form id="loginForm" method="POST" action="{{ url_for('login') }}" autocomplete="off">
         <div class="form-group">
           <label for="username">아이디</label>
           <input id="username" name="username" type="text" placeholder="아이디를 입력하세요" required autofocus />
@@ -50,6 +50,12 @@
             </button>
           </div>
         </div>
+        <div class="remember-row">
+          <label class="remember-label" for="rememberId">
+            <input id="rememberId" type="checkbox" />
+            <span>아이디 저장</span>
+          </label>
+        </div>
         <button type="submit" class="btn-login">로그인</button>
       </form>
     </div>
@@ -58,10 +64,39 @@
   </div>
 
   <script>
+    const SAVED_ID_KEY = 'hs_power_saved_username';
+    const REMEMBER_KEY = 'hs_power_remember_id';
+
     function togglePw() {
       const inp = document.getElementById('password');
       inp.type = inp.type === 'password' ? 'text' : 'password';
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const rememberId = document.getElementById('rememberId');
+      const loginForm = document.getElementById('loginForm');
+
+      const isRememberOn = localStorage.getItem(REMEMBER_KEY) === '1';
+      const savedId = localStorage.getItem(SAVED_ID_KEY) || '';
+
+      if (isRememberOn && savedId) {
+        usernameInput.value = savedId;
+        rememberId.checked = true;
+        passwordInput.focus();
+      }
+
+      loginForm.addEventListener('submit', () => {
+        if (rememberId.checked) {
+          localStorage.setItem(SAVED_ID_KEY, usernameInput.value.trim());
+          localStorage.setItem(REMEMBER_KEY, '1');
+        } else {
+          localStorage.removeItem(SAVED_ID_KEY);
+          localStorage.removeItem(REMEMBER_KEY);
+        }
+      });
+    });
   </script>
 </body>
 </html>

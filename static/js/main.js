@@ -8,6 +8,12 @@ let editMode  = false;
 let selectedColor = '#1a73e8';
 let currentFloorBuildingId = null;  // 층수 모달에서 참조 중인 건물 ID
 
+// ── 줌 상태 ───────────────────────────────────────
+let zoomLevel = 1;  // 1 = 100%, 2 = 200% 등
+const MIN_ZOOM = 0.8;  // 80%
+const MAX_ZOOM = 3;    // 300%
+const ZOOM_STEP = 0.2; // 20%씩 증가/감소
+
 // ── 초기화 ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
@@ -22,6 +28,44 @@ document.addEventListener('DOMContentLoaded', () => {
       renderAll();
     });
   }
+
+  // ── 줌 컨트롤 이벤트 ───
+  const mapWrapper = document.getElementById('mapWrapper');
+  const mapContainer = document.getElementById('mapContainer');
+
+  // 마우스 휠 줌
+  mapContainer.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      if (e.deltaY < 0) zoomIn();
+      else zoomOut();
+    }
+  }, { passive: false });
+
+  // 모바일 핀치 줌
+  let lastDistance = 0;
+  mapContainer.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      const p1 = e.touches[0];
+      const p2 = e.touches[1];
+      lastDistance = Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
+    }
+  });
+
+  mapContainer.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const p1 = e.touches[0];
+      const p2 = e.touches[1];
+      const dist = Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
+      if (lastDistance > 0) {
+        const ratio = dist / lastDistance;
+        if (ratio > 1.05) zoomIn();
+        else if (ratio < 0.95) zoomOut();
+      }
+      lastDistance = dist;
+    }
+  }, { passive: false });
 });
 
 // ── 렌더링 ─────────────────────────────────────────
@@ -415,6 +459,28 @@ function escapeHtml(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── 줌 함수 ────────────────────────────────────────
+function setZoom(newLevel) {
+  newLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newLevel));
+  zoomLevel = newLevel;
+  const mapWrapper = document.getElementById('mapWrapper');
+  mapWrapper.style.transform = `scale(${zoomLevel})`;
+  mapWrapper.style.transformOrigin = 'center center';
+  document.getElementById('zoomLevel').textContent = Math.round(zoomLevel * 100) + '%';
+}
+
+function zoomIn() {
+  setZoom(zoomLevel + ZOOM_STEP);
+}
+
+function zoomOut() {
+  setZoom(zoomLevel - ZOOM_STEP);
+}
+
+function resetZoom() {
+  setZoom(1);
 }
 
 // 모달 외부 클릭으로 닫기
