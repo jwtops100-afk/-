@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>해성전력계통 – 로그인</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="login-body">
+
+  <div class="login-wrapper">
+    <!-- 로고 / 회사명 -->
+    <div class="login-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,4 56,18 56,42 30,56 4,42 4,18" fill="#0d47a1" opacity=".15"/>
+          <polygon points="30,4 56,18 56,42 30,56 4,42 4,18" fill="none" stroke="#1a73e8" stroke-width="2.5"/>
+          <polyline points="18,30 26,38 42,22" stroke="#1a73e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="30" cy="14" r="3" fill="#42a5f5"/>
+          <circle cx="46" cy="38" r="3" fill="#42a5f5"/>
+          <circle cx="14" cy="38" r="3" fill="#42a5f5"/>
+        </svg>
+      </div>
+      <h1 class="login-company">해성전력계통</h1>
+      <p class="login-subtitle">HAESUNG POWER SYSTEM</p>
+    </div>
+
+    <!-- 로그인 카드 -->
+    <div class="login-card">
+      <h2 class="login-title">로그인</h2>
+
+      {% if error %}
+      <div class="login-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+        <div class="form-group">
+          <label for="username">아이디</label>
+          <input id="username" name="username" type="text" placeholder="아이디를 입력하세요" required autofocus />
+        </div>
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <div class="pw-wrap">
+            <input id="password" name="password" type="password" placeholder="비밀번호를 입력하세요" required />
+            <button type="button" class="pw-toggle" onclick="togglePw()" title="비밀번호 보기">
+              <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-login">로그인</button>
+      </form>
+    </div>
+
+    <p class="login-footer">© 2024 해성전력계통. All rights reserved.</p>
+  </div>
+
+  <script>
+    function togglePw() {
+      const inp = document.getElementById('password');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+</body>
+</html>
